@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,16 +33,18 @@ public class Feedback {
     @Column(name="content")
     private String content;
 
-    @Column(name="sentiment_score")
-    private Double score;
+    @Column(name="AI_Analysis")
+    private String topSentiment;
 
-//    @Enumerated(EnumType.STRING)
-//    private String sentiment;
-
-    @Column(name = "created_at")
-    @CreatedDate
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Transient
+    private SentimentAnalysis SentimentAnalysis;
 
-
+    public void setSentimentAnalysis(SentimentAnalysis SentimentAnalysis) {
+        this.SentimentAnalysis = SentimentAnalysis;
+        setTopSentiment(SentimentAnalysis.results().get(0).getLabel());
+    }
 }

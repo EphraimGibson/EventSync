@@ -32,7 +32,7 @@ public class EventService {
         return eventRepository.findById(eventId);
     }
 
-    public List<Feedback> getAllFeedBackByEvent(Long eventId){
+    public List<Feedback> getAllFeedBacksOfAnEvent(Long eventId){
         return feedbackRepository.findByEvent_Id(eventId);
     }
 }
