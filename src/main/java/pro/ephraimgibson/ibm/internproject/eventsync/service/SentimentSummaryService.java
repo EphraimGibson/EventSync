@@ -4,35 +4,46 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pro.ephraimgibson.ibm.internproject.eventsync.data.FeedbackRepository;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Feedback;
-import pro.ephraimgibson.ibm.internproject.eventsync.model.SentimentResult;
 
-import java.util.List;
+import java.text.DecimalFormat;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class SentimentSummaryService {
 
-    private final FeedbackRepository feedbackRepository;
+    SummaryAnalyzer summaryAnalyzer;
+    FeedbackRepository feedbackRepository;
 
-    public void countFeedbacks(Long eventId){
-        Double positiveCount = 0.00, negativeCount = 0.00, neutralCount = 0.00;
-
+    public Map<String, Object> getFeedbackSummary(Long eventId){
         List<Feedback> feedbackList = feedbackRepository.findByEvent_Id(eventId);
 
-       for(Feedback feedback : feedbackList){
-           List<SentimentResult> results = feedback.getSentimentAnalysis().results();
+        if (feedbackList.isEmpty()) return null;
 
-           for(SentimentResult result : results){
-               switch (result.getLabel()){
-                   case "POSITIVE" : positiveCount += result.getScore();
-                    break;
-                   case "NEGATIVE" : negativeCount += result.getScore();
-                       break;
-                   case "NEUTRAL" : neutralCount += result.getScore();
-                       break;
-               }
-           }
-       }
+        Map<String, Object> summary = processFeedbackSummary(feedbackList);
 
+        return Map.of("Event Id", eventId,
+                    "Summary", summary);
     }
+
+    public Map<String, Object> getAllEventsSentimentSummary() {
+        List<Feedback> feedbackList = feedbackRepository.findAll();
+
+        if (feedbackList.isEmpty()) return null;
+
+        Map<String, Object> summary = processFeedbackSummary(feedbackList);
+
+        return Map.of("Summary", summary);
+    }
+
+    private Map<String, Object> processFeedbackSummary(List<Feedback> feedbackList) {
+        Map<String, Object> feedbackCounts = summaryAnalyzer.countFeedbacks(feedbackList);
+        Map<String, Object> feedbackScores = summaryAnalyzer.sumUpAndCalculateAverageOfAllScores(feedbackList);
+
+        Map<String, Object> summary = new HashMap<>(feedbackCounts);
+        summary.putAll(feedbackScores);
+        return summary;
+    }
+
+
 }

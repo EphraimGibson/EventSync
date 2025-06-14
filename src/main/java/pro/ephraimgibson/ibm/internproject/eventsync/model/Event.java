@@ -22,4 +22,10 @@ public class Event {
 
     @Column(name = "Description")
     private String description;
+
+    @Column(name = "Date")
+    private String date;
+
+    @Column(name="location")
+    private String location;
 }

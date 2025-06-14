@@ -41,10 +41,36 @@ public class Feedback {
     private LocalDateTime createdAt;
 
     @Transient
-    private SentimentAnalysis SentimentAnalysis;
+    private SentimentAnalysis fullSentimentAnalysis;
 
-    public void setSentimentAnalysis(SentimentAnalysis SentimentAnalysis) {
-        this.SentimentAnalysis = SentimentAnalysis;
-        setTopSentiment(SentimentAnalysis.results().get(0).getLabel());
+    private Double negativeScore;
+    private Double positiveScore;
+    private Double neutralScore;
+
+    public void setFullSentimentAnalysis(SentimentAnalysis AIsentimentAnalysis){
+        this.fullSentimentAnalysis = AIsentimentAnalysis;
+        this.extractAndSetAllSentimentFields();
     }
+
+    private void extractAndSetAllSentimentFields(){
+        setTopSentiment(fullSentimentAnalysis.results().get(0).getLabel());
+
+        for (SentimentResult result : fullSentimentAnalysis.results()) {
+            switch (result.getLabel()) {
+                case "POSITIVE":
+                    setPositiveScore(result.getScore()) ;
+                    break;
+                case "NEGATIVE":
+                    setNegativeScore(result.getScore()); ;
+                    break;
+                case "NEUTRAL":
+                    setNeutralScore(result.getScore()); ;
+                    break;
+            }
+        }
+
+    }
+
+
+
 }

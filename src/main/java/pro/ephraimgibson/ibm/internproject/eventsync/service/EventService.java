@@ -1,11 +1,11 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.stereotype.Service;
 import pro.ephraimgibson.ibm.internproject.eventsync.data.EventRepository;
-import pro.ephraimgibson.ibm.internproject.eventsync.data.FeedbackRepository;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Event;
-import pro.ephraimgibson.ibm.internproject.eventsync.model.Feedback;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,26 +13,20 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class EventService {
-    private final EventRepository eventRepository;
-    private final FeedbackRepository feedbackRepository;
 
-    public List<Event> getAllEvents(){
+    private final EventRepository eventRepository;
+
+    public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
-    public Event addEvent(Event event){
+    public Event addEvent(Event event) {
         return eventRepository.save(event);
     }
 
-    public Feedback submitFeedback(Feedback feedback){
-        return feedbackRepository.save(feedback);
-    }
-
-    public Optional<Event> getSingleEvent(Long eventId){
-        return eventRepository.findById(eventId);
-    }
-
-    public List<Feedback> getAllFeedBacksOfAnEvent(Long eventId){
-        return feedbackRepository.findByEvent_Id(eventId);
+    public Event getSingleEvent(Long eventId) {
+        return eventRepository.findById(eventId)
+                .orElseThrow(()-> new EntityNotFoundException("Event not found with id: " + eventId));
     }
 }
+
