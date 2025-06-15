@@ -1,11 +1,11 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Event;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Feedback;
-import pro.ephraimgibson.ibm.internproject.eventsync.model.SentimentAnalysis;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.EventService;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.FeedbackService;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.SentimentSummaryService;
@@ -29,7 +29,7 @@ public class EventRestController {
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         Event savedEvent = eventService.addEvent(event);
-        return ResponseEntity.ok(savedEvent);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEvent);
     }
 
     @PostMapping("/{eventId}/feedback")
@@ -38,7 +38,7 @@ public class EventRestController {
         feedback.setEvent(event);
 
         Feedback savedFeedback = feedbackService.submitFeedback(feedback);
-        return ResponseEntity.ok(savedFeedback);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedFeedback);
     }
 
     @GetMapping("/{eventId}/feedback")

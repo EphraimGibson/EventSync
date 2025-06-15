@@ -1,5 +1,6 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pro.ephraimgibson.ibm.internproject.eventsync.data.FeedbackRepository;
@@ -12,13 +13,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SentimentSummaryService {
 
-    SummaryAnalyzer summaryAnalyzer;
-    FeedbackRepository feedbackRepository;
+    private final SummaryAnalyzer summaryAnalyzer;
+    private final FeedbackService feedbackService;
 
     public Map<String, Object> getFeedbackSummary(Long eventId){
-        List<Feedback> feedbackList = feedbackRepository.findByEvent_Id(eventId);
-
-        if (feedbackList.isEmpty()) return null;
+        List<Feedback> feedbackList = feedbackService.getAllFeedbacksOfAnEvent(eventId);
 
         Map<String, Object> summary = processFeedbackSummary(feedbackList);
 
@@ -27,9 +26,7 @@ public class SentimentSummaryService {
     }
 
     public Map<String, Object> getAllEventsSentimentSummary() {
-        List<Feedback> feedbackList = feedbackRepository.findAll();
-
-        if (feedbackList.isEmpty()) return null;
+        List<Feedback> feedbackList = feedbackService.getAllFeedbacks();
 
         Map<String, Object> summary = processFeedbackSummary(feedbackList);
 

@@ -1,5 +1,6 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pro.ephraimgibson.ibm.internproject.eventsync.data.FeedbackRepository;
@@ -23,7 +24,10 @@ public class FeedbackService {
     }
 
     public List<Feedback> getAllFeedbacksOfAnEvent(Long eventId) {
-        return feedbackRepository.findByEvent_Id(eventId);
+        List<Feedback> feedbacks = feedbackRepository.findByEvent_Id(eventId);
+        if (feedbacks.isEmpty()) throw new EntityNotFoundException("No Feedback found for this event:" + eventId);
+
+        return feedbacks;
     }
 
     public List<Feedback> getAllFeedbacks() {
