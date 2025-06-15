@@ -8,19 +8,16 @@ import pro.ephraimgibson.ibm.internproject.eventsync.model.Feedback;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.SentimentAnalysis;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.EventService;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.FeedbackService;
-import pro.ephraimgibson.ibm.internproject.eventsync.service.SentimentService;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.SentimentSummaryService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
 public class EventRestController {
     private final EventService eventService;
-    private final SentimentService sentimentService;
     private final SentimentSummaryService sentimentSummaryService;
     private final FeedbackService feedbackService;
 
@@ -37,14 +34,10 @@ public class EventRestController {
 
     @PostMapping("/{eventId}/feedback")
     public ResponseEntity<Feedback> createFeedback(@PathVariable Long eventId, @RequestBody Feedback feedback) {
-        Event eventForFeedback = eventService.getSingleEvent(eventId);
+        Event event = eventService.getSingleEvent(eventId);
+        feedback.setEvent(event);
 
-        SentimentAnalysis sentimentResponse = sentimentService.getAISentimentAnalysis(feedback.getContent());
-
-        feedback.setEvent(eventForFeedback);
-        feedback.setFullSentimentAnalysis(sentimentResponse);
         Feedback savedFeedback = feedbackService.submitFeedback(feedback);
-
         return ResponseEntity.ok(savedFeedback);
     }
 

@@ -2,13 +2,11 @@ package pro.ephraimgibson.ibm.internproject.eventsync.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.stereotype.Service;
 import pro.ephraimgibson.ibm.internproject.eventsync.data.EventRepository;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Event;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

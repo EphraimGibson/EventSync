@@ -7,9 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pro.ephraimgibson.ibm.internproject.eventsync.data.EventRepository;
-import pro.ephraimgibson.ibm.internproject.eventsync.data.FeedbackRepository;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Event;
-import pro.ephraimgibson.ibm.internproject.eventsync.model.Feedback;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,24 +22,8 @@ public class EventServiceTest {
     @Mock
     private EventRepository mockEventRepository;
 
-    @Mock
-    private SentimentSummaryService mockSummaryService;
-
     @InjectMocks
     private EventService eventService;
-
-    private Event createEvent() {
-        return new Event(1L, "NBA all star night",
-                "One night of friendly basketball with famous basketball players",
-                "2025-09-19", "Los Angeles");
-    }
-
-    private List<Event> createListOfEvents() {
-        Event event1 = new Event(2L, "Primavera Festival", "Spring festival with live concert", "2025-01-26", "Porto");
-        Event event2 = new Event(3L, "Gravity Vilnius", "Lakeside Event", "2025-05-20", "Vilnius");
-
-        return List.of(event1, event2);
-    }
 
     @Test
     public void testAddEventShouldAddAnEventToTheRepo() {
@@ -95,6 +77,20 @@ public class EventServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             eventService.getSingleEvent(10L);
         });
+    }
+
+
+    private Event createEvent() {
+        return new Event(1L, "NBA all star night",
+                "One night of friendly basketball with famous basketball players",
+                "2025-09-19", "Los Angeles");
+    }
+
+    private List<Event> createListOfEvents() {
+        Event event1 = new Event(2L, "Primavera Festival", "Spring festival with live concert", "2025-01-26", "Porto");
+        Event event2 = new Event(3L, "Gravity Vilnius", "Lakeside Event", "2025-05-20", "Vilnius");
+
+        return List.of(event1, event2);
     }
 
 

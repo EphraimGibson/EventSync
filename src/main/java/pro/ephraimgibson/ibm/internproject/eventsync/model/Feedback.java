@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 @Entity
@@ -54,17 +55,18 @@ public class Feedback {
 
     private void extractAndSetAllSentimentFields(){
         setTopSentiment(fullSentimentAnalysis.results().get(0).getLabel());
+        DecimalFormat df = new DecimalFormat("#.##");
 
         for (SentimentResult result : fullSentimentAnalysis.results()) {
             switch (result.getLabel()) {
                 case "POSITIVE":
-                    setPositiveScore(result.getScore()) ;
+                    setPositiveScore(Double.parseDouble(df.format(result.getScore()))) ;
                     break;
                 case "NEGATIVE":
-                    setNegativeScore(result.getScore()); ;
+                    setNegativeScore(Double.parseDouble(df.format(result.getScore()))); ;
                     break;
                 case "NEUTRAL":
-                    setNeutralScore(result.getScore()); ;
+                    setNeutralScore(Double.parseDouble(df.format(result.getScore()))); ;
                     break;
             }
         }
