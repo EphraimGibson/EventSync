@@ -2,6 +2,7 @@ package pro.ephraimgibson.ibm.internproject.eventsync.model;
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title is required and can not be empty")
     @Column(name = "Title")
     private String title;
 

@@ -1,6 +1,7 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class Feedback {
     @Column(name = "email")
     private String email;
 
+    @NotBlank(message = "Content field must be added")
     @Column(name="content")
     private String content;
 

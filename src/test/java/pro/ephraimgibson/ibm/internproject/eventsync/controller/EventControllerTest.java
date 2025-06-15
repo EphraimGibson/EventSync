@@ -61,7 +61,6 @@ public class EventControllerTest {
         verify(mockFeedbackService).submitFeedback(inputFeedback);
     }
 
-
     @Test
     public void testShouldAddEventBeforeCreateFeedback() {
         //Given

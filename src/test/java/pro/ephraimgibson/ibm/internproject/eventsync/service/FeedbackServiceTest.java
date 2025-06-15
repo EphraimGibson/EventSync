@@ -31,7 +31,7 @@ public class FeedbackServiceTest {
 
     @Test
     public void testShouldAddSentimentToFeedBackAndSaveNewFeedback() {
-        //Given
+        //GIVEN
         Feedback feedback = createFeedback();
         feedback.setContent("The event was wonderful");
         feedback.setId(100L);
@@ -42,7 +42,7 @@ public class FeedbackServiceTest {
         when(sentimentService.getAISentimentAnalysis("The event was wonderful"))
                 .thenReturn(mockSentiment);
 
-        //When
+        //WHEN
         Feedback result = feedbackService.submitFeedback(feedback);
 
         //Then
@@ -54,7 +54,7 @@ public class FeedbackServiceTest {
 
     @Test
     public void testThatAllFeedbackFieldWereSetAfterSubmitFeedback(){
-        //Given
+        //GIVEN
         Feedback feedback = createFeedback();
         feedback.setContent("The event was wonderful");
         feedback.setId(100L);
@@ -65,11 +65,10 @@ public class FeedbackServiceTest {
         when(sentimentService.getAISentimentAnalysis("The event was wonderful"))
                 .thenReturn(mockSentiment);
 
-        //When
+        //WHEN
         Feedback result = feedbackService.submitFeedback(feedback);
 
-        // Then
-
+        // THEN
         assertEquals("POSITIVE", result.getTopSentiment());
         assertEquals(0.8, result.getPositiveScore());
         assertEquals(0.1, result.getNegativeScore());
@@ -80,14 +79,14 @@ public class FeedbackServiceTest {
 
     @Test
     public void testShouldRetrieveAllFeedbacksFromRepo(){
-        //Given
+        //GIVEN
         List<Feedback> feedbackList = createFeedbackLists();
         when(mockFeedbackRepository.findAll()).thenReturn(feedbackList);
 
-        //When
+        //WHEN
         List<Feedback> results = feedbackService.getAllFeedbacks();
 
-        //Then
+        //THEN
         assertEquals(feedbackList.size(), results.size());
         verify(mockFeedbackRepository).findAll();
     }

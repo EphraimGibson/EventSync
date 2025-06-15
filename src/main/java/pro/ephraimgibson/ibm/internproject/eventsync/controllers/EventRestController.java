@@ -1,5 +1,6 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 @RequiredArgsConstructor
 public class EventRestController {
     private final EventService eventService;
@@ -27,13 +28,13 @@ public class EventRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+    public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
         Event savedEvent = eventService.addEvent(event);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEvent);
     }
 
     @PostMapping("/{eventId}/feedback")
-    public ResponseEntity<Feedback> createFeedback(@PathVariable Long eventId, @RequestBody Feedback feedback) {
+    public ResponseEntity<Feedback> createFeedback(@PathVariable Long eventId, @Valid @RequestBody Feedback feedback) {
         Event event = eventService.getSingleEvent(eventId);
         feedback.setEvent(event);
 
@@ -42,12 +43,12 @@ public class EventRestController {
     }
 
     @GetMapping("/{eventId}/feedback")
-    public List<Feedback> getEventFeedbacks(@PathVariable Long eventId) {
+    public List<Feedback> getSingleEventFeedbacks(@PathVariable Long eventId) {
         return feedbackService.getAllFeedbacksOfAnEvent(eventId);
     }
 
     @GetMapping("/{eventId}/summary")
-    public Map<String, Object> getEventFeedbackAnalysisSummary(@PathVariable Long eventId) {
+    public Map<String, Object> getSingleEventFeedbackSummary(@PathVariable Long eventId) {
         return sentimentSummaryService.getFeedbackSummary(eventId);
     }
 
@@ -57,7 +58,7 @@ public class EventRestController {
     }
 
     @GetMapping("/summary")
-    public Map<String,Object> getAllEventSummary(){
+    public Map<String,Object> getAllEventFeedbackSummary(){
         return sentimentSummaryService.getAllEventsSentimentSummary();
     }
 }

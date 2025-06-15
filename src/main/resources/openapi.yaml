@@ -1,0 +1,558 @@
+openapi: 3.0.3
+info:
+  title: EventSync API
+  description: |
+    API for Event Management and Feedback Analysis with AI-powered sentiment analysis.
+    
+    This API allows you to:
+    - Create and manage events
+    - Submit feedback for events
+    - Get AI-powered sentiment analysis of feedback
+    - Generate comprehensive analytics summaries
+  version: 1.0.0
+  contact:
+    name: EventSync API Support
+    email: mrgibs97@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+  - url: https://api.eventsync.com
+    description: Production server
+
+tags:
+  - name: Events
+    description: Event management operations
+  - name: Feedback
+    description: Feedback submission and retrieval
+  - name: Analytics
+    description: Sentiment analysis and summary statistics
+
+paths:
+  /events:
+    get:
+      tags:
+        - Events
+      summary: Get all events
+      description: Retrieve a list of all events in the system
+      operationId: getAllEvents
+      responses:
+        '200':
+          description: Successfully retrieved all events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+              examples:
+                events_list:
+                  summary: Example events list
+                  value:
+                    - id: 1
+                      title: "NBA All-Star Night"
+                      description: "One night of friendly basketball with famous players"
+                      date: "2025-09-19"
+                      location: "Los Angeles"
+                    - id: 2
+                      title: "Tech Conference 2025"
+                      description: "Latest trends in technology"
+                      date: "2025-10-15"
+                      location: "San Francisco"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Events
+      summary: Create a new event
+      description: Create a new event with the provided details
+      operationId: createEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+            examples:
+              new_event:
+                summary: Example new event
+                value:
+                  title: "Summer Music Festival"
+                  description: "Three days of amazing music and fun"
+                  date: "2025-07-20"
+                  location: "Austin, Texas"
+      responses:
+        '201':
+          description: Event created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /events/{eventId}/feedback:
+    get:
+      tags:
+        - Feedback
+      summary: Get all feedback for an event
+      description: Retrieve all feedback submissions for a specific event
+      operationId: getEventFeedbacks
+      parameters:
+        - $ref: '#/components/parameters/EventIdParam'
+      responses:
+        '200':
+          description: Successfully retrieved event feedback
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+        '404':
+          $ref: '#/components/responses/EventNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Feedback
+      summary: Submit feedback for an event
+      description: |
+        Submit new feedback for an event. The feedback will be automatically processed 
+        through AI sentiment analysis to determine sentiment scores and top sentiment.
+      operationId: createFeedback
+      parameters:
+        - $ref: '#/components/parameters/EventIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+            examples:
+              positive_feedback:
+                summary: Positive feedback example
+                value:
+                  content: "Amazing event! Really enjoyed every moment of it."
+              negative_feedback:
+                summary: Negative feedback example
+                value:
+                  content: "The event was disappointing and poorly organized."
+      responses:
+        '201':
+          description: Feedback submitted and analyzed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/EventNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /events/{eventId}/summary:
+    get:
+      tags:
+        - Analytics
+      summary: Get event feedback analysis summary
+      description: |
+        Get comprehensive sentiment analysis summary for a specific event including:
+        - Total feedback count
+        - Sentiment count distribution by category
+        - Percentage breakdown of sentiment types
+        - Average sentiment scores with overall calculated score
+        - Weighted overall sentiment classification
+      operationId: getEventFeedbackAnalysisSummary
+      parameters:
+        - $ref: '#/components/parameters/EventIdParam'
+      responses:
+        '200':
+          description: Successfully generated event analysis summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventAnalysisSummary'
+              examples:
+                event_summary:
+                  summary: Example event analysis
+                  value:
+                    Event Id: 1
+                    Summary of Event:
+                      Total Feedbacks: 6
+                      Sentiment Count:
+                        POSITIVE: 3
+                        NEGATIVE: 3
+                        NEUTRAL: 0
+                      Percentage of Sentiments:
+                        POSITIVE: 50.0
+                        NEGATIVE: 50.0
+                        NEUTRAL: 0.0
+                      Average Feedback Scores:
+                        Overall Sentiment Score: 48
+                        POSITIVE: 40
+                        NEGATIVE: 43
+                        NEUTRAL: 18
+                      Overall Sentiment: "SLIGHTLY_POSITIVE"
+        '404':
+          $ref: '#/components/responses/EventNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /events/feedback:
+    get:
+      tags:
+        - Feedback
+      summary: Get all feedback across all events
+      description: Retrieve all feedback submissions from all events in the system
+      operationId: getAllFeedbacks
+      responses:
+        '200':
+          description: Successfully retrieved all feedback
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /events/summary:
+    get:
+      tags:
+        - Analytics
+      summary: Get global feedback analysis summary
+      description: |
+        Get comprehensive sentiment analysis summary across all events including:
+        - Total feedback count across all events
+        - Global sentiment count distribution
+        - Percentage breakdown of all sentiment types
+        - Overall average sentiment scores with calculated overall score
+        - Weighted global sentiment classification
+      operationId: getAllEventSummary
+      responses:
+        '200':
+          description: Successfully generated global analysis summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalAnalysisSummary'
+              examples:
+                global_summary:
+                  summary: Example global analysis
+                  value:
+                    Summary Of All Events:
+                      Total Feedbacks: 6
+                      Sentiment Count:
+                        POSITIVE: 3
+                        NEGATIVE: 3
+                        NEUTRAL: 0
+                      Percentage of Sentiments:
+                        POSITIVE: 50.0
+                        NEGATIVE: 50.0
+                        NEUTRAL: 0.0
+                      Average Feedback Scores:
+                        Overall Sentiment Score: 48
+                        POSITIVE: 40
+                        NEGATIVE: 43
+                        NEUTRAL: 18
+                      Overall Sentiment: "SLIGHTLY_POSITIVE"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    EventIdParam:
+      name: eventId
+      in: path
+      required: true
+      description: Unique identifier of the event
+      schema:
+        type: integer
+        format: int64
+        example: 1
+
+  schemas:
+    Event:
+      type: object
+      required:
+        - id
+        - title
+        - date
+        - location
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the event
+          example: 1
+        title:
+          type: string
+          description: Event title
+          example: "NBA All-Star Night"
+          maxLength: 255
+        description:
+          type: string
+          description: Detailed description of the event
+          example: "One night of friendly basketball with famous basketball players"
+          maxLength: 1000
+        date:
+          type: string
+          format: date
+          description: Event date in YYYY-MM-DD format
+          example: "2025-09-19"
+        location:
+          type: string
+          description: Event location
+          example: "Los Angeles"
+          maxLength: 255
+
+    EventRequest:
+      type: object
+      required:
+        - title
+        - date
+        - location
+      properties:
+        title:
+          type: string
+          description: Event title
+          example: "NBA All-Star Night"
+          maxLength: 255
+          minLength: 1
+        description:
+          type: string
+          description: Detailed description of the event
+          example: "One night of friendly basketball with famous basketball players"
+          maxLength: 1000
+        date:
+          type: string
+          format: date
+          description: Event date in YYYY-MM-DD format
+          example: "2025-09-19"
+        location:
+          type: string
+          description: Event location
+          example: "Los Angeles"
+          maxLength: 255
+          minLength: 1
+
+    Feedback:
+      type: object
+      required:
+        - id
+        - content
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the feedback
+          example: 1
+        content:
+          type: string
+          description: Feedback content provided by the user
+          example: "Great event, really enjoyed it!"
+          maxLength: 2000
+        topSentiment:
+          type: string
+          enum: [POSITIVE, NEGATIVE, NEUTRAL]
+          description: The dominant sentiment detected by AI analysis
+          example: "POSITIVE"
+        positiveScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: AI-calculated positive sentiment score (0.0 to 1.0)
+          example: 0.85
+        negativeScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: AI-calculated negative sentiment score (0.0 to 1.0)
+          example: 0.10
+        neutralScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: AI-calculated neutral sentiment score (0.0 to 1.0)
+          example: 0.05
+        event:
+          $ref: '#/components/schemas/Event'
+
+    FeedbackRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          description: Feedback content
+          example: "Great event, really enjoyed it!"
+          maxLength: 2000
+          minLength: 1
+
+    EventAnalysisSummary:
+      type: object
+      properties:
+        Event Id:
+          type: integer
+          format: int64
+          description: ID of the analyzed event
+          example: 1
+        Summary of Event:
+          $ref: '#/components/schemas/AnalysisSummaryData'
+
+    GlobalAnalysisSummary:
+      type: object
+      properties:
+        Summary Of All Events:
+          $ref: '#/components/schemas/AnalysisSummaryData'
+
+    AnalysisSummaryData:
+      type: object
+      properties:
+        Total Feedbacks:
+          type: integer
+          description: Total number of feedback submissions analyzed
+          example: 6
+        Sentiment Count:
+          type: object
+          description: Count of feedbacks by sentiment classification
+          properties:
+            POSITIVE:
+              type: integer
+              description: Number of feedbacks classified as positive
+              example: 3
+            NEGATIVE:
+              type: integer
+              description: Number of feedbacks classified as negative
+              example: 3
+            NEUTRAL:
+              type: integer
+              description: Number of feedbacks classified as neutral
+              example: 0
+        Percentage of Sentiments:
+          type: object
+          description: Percentage distribution of sentiment classifications
+          properties:
+            POSITIVE:
+              type: number
+              format: double
+              description: Percentage of positive feedbacks
+              example: 50.0
+            NEGATIVE:
+              type: number
+              format: double
+              description: Percentage of negative feedbacks
+              example: 50.0
+            NEUTRAL:
+              type: number
+              format: double
+              description: Percentage of neutral feedbacks
+              example: 0.0
+        Average Feedback Scores:
+          type: object
+          description: |
+            Average sentiment scores across all feedbacks (converted to percentages 0-100).
+            Individual sentiment scores represent the average confidence levels for each sentiment type.
+          properties:
+            Overall Sentiment Score:
+              type: integer
+              description: |
+                Calculated overall sentiment score using the formula:
+                `(Average Positive Score - Average Negative Score + 100) / 2`
+                
+                This formula:
+                1. Takes the difference between positive and negative averages
+                2. Adds 100 to shift the range from [-100,100] to [0,200]
+                3. Divides by 2 to normalize to [0,100] scale
+                
+                Result interpretation:
+                - 0-40: Negative sentiment dominates
+                - 40-60: Balanced/Slightly positive sentiment  
+                - 60-100: Positive sentiment dominates
+              example: 48
+            POSITIVE:
+              type: integer
+              description: Average positive sentiment confidence score (0-100 scale)
+              example: 40
+            NEGATIVE:
+              type: integer
+              description: Average negative sentiment confidence score (0-100 scale)
+              example: 43
+            NEUTRAL:
+              type: integer
+              description: Average neutral sentiment confidence score (0-100 scale)
+              example: 18
+        Overall Sentiment:
+          type: string
+          enum: [VERY_POSITIVE, POSITIVE, SLIGHTLY_POSITIVE, NEUTRAL, SLIGHTLY_NEGATIVE, NEGATIVE, VERY_NEGATIVE]
+          description: |
+            Weighted overall sentiment classification based on the Overall Sentiment Score:
+            
+            **Score Ranges:**
+            - 80-100: VERY_POSITIVE
+            - 65-79: POSITIVE  
+            - 55-64: SLIGHTLY_POSITIVE
+            - 45-54: NEUTRAL
+            - 35-44: SLIGHTLY_NEGATIVE
+            - 20-34: NEGATIVE
+            - 0-19: VERY_NEGATIVE
+            
+            **Calculation Method:**
+            The classification considers both the calculated Overall Sentiment Score and 
+            the distribution of sentiment counts to provide a weighted assessment.
+          example: "SLIGHTLY_POSITIVE"
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: "Event not found with id: 1"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+        status:
+          type: integer
+          description: HTTP status code
+          example: 404
+
+  responses:
+    EventNotFound:
+      description: Event not found
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "Event not found with id: 1"
+
+    ValidationError:
+      description: Validation error - missing or invalid input data
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "Validation error: You are missing a required field"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "Something went wrong"
