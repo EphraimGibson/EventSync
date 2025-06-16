@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeError(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Something went wrong");
+                .body("Something went wrong: " + e.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -57,6 +57,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(customMessage);
     }
 
+    @ExceptionHandler(ExternalAPIServiceError.class)
+    public ResponseEntity<String> handleExternalApiError(ExternalAPIServiceError e){
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+
+    }
 
 }
 

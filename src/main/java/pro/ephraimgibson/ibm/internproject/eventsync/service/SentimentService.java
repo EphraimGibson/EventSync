@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import pro.ephraimgibson.ibm.internproject.eventsync.exception.ExternalAPIServiceError;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.SentimentRequest;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.SentimentAnalysis;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.SentimentResult;
@@ -27,6 +28,7 @@ public class SentimentService {
 
     public SentimentAnalysis getAISentimentAnalysis(String content) {
         try {
+            System.out.println(apiToken);
             List<List<SentimentResult>> nestedAISentimentResponse = webClient.post()
                     .uri("/models/cardiffnlp/twitter-roberta-base-sentiment")
                     .header("Authorization", "Bearer " + apiToken)
@@ -43,7 +45,7 @@ public class SentimentService {
             List<SentimentResult> AISentimentAnalysis = nestedAISentimentResponse.get(0);
             return new SentimentAnalysis(AISentimentAnalysis);
         } catch (Exception e) {
-            throw new RuntimeException("Sentiment analysis failed: " + e.getMessage());
+            throw new ExternalAPIServiceError();
         }
     }
 
