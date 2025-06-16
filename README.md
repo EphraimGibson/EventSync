@@ -31,15 +31,10 @@ EventSync is a platform designed to streamline event management for teams organi
 - Automatic sentiment analysis of feedback using Hugging Face API
 - View feedback count and sentiment summary per event
 - RESTful API with Swagger documentation
-
+![Screenshot 2025-06-16 at 01.15.27.png](../../../../var/folders/v_/tyrwxp093zs449kyjgp169mh0000gn/T/TemporaryItems/NSIRD_screencaptureui_HrmRsa/Screenshot%202025-06-16%20at%2001.15.27.png)
 ## Installation for Users
 
-### Prerequisites
-
-- Java 17 or higher
-- Maven 3.6 or higher
-- Hugging Face API token
-
+UI ....LOADING
 ### Setup
 
 --coming up
@@ -74,6 +69,13 @@ EventSync is a platform designed to streamline event management for teams organi
 
 ### Development Setup
 
+### Prerequisites
+
+- Java 17 or higher
+- Maven 3.6 or higher
+- Hugging Face API token
+
+
 1. Clone the repository:
    ```
    git clone https://github.com/yourusername/EventSync.git
@@ -93,6 +95,7 @@ EventSync is a platform designed to streamline event management for teams organi
    ```
 
 5. Access the application:
+   - UI: http://localhost:8080
    - API: http://localhost:8080/api/events
    - Swagger UI: http://localhost:8080/swagger-ui.html
    - H2 Console: http://localhost:8080/h2-console (JDBC URL: jdbc:h2:mem:testdb)
