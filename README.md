@@ -99,7 +99,6 @@ OpenAPI Documentation: **[remycommits-337869308.us-east-1.elb.amazonaws.com/swag
 - `GET /api/events/feedback`: Get all feedback
 - `GET /api/events/summary`: Get sentiment summary for all events
 
-### Development Setup
 
 ### Docker
 
@@ -107,6 +106,8 @@ You can pull the pre-built Docker image for EventSync:
 ```
 docker pull remy979/eventsync:latest
 ```
+
+### Development Setup
 
 ### Prerequisites
 
