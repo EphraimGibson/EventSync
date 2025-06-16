@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleInvalidInput(ConstraintViolationException e){
+    public ResponseEntity<String> handleInvalidInput(ConstraintViolationException e) {
         String customMessage = e.getConstraintViolations()
                 .stream()
                 .findFirst()
@@ -46,22 +46,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleInvalidInput(MethodArgumentNotValidException e){
-       String customMessage = e.getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .findFirst()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .orElse("Validation error: You are missing a required field");
+    public ResponseEntity<String> handleInvalidInput(MethodArgumentNotValidException e) {
+        String customMessage = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .findFirst()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("Validation error: You are missing a required field");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(customMessage);
     }
 
     @ExceptionHandler(ExternalAPIServiceError.class)
-    public ResponseEntity<String> handleExternalApiError(ExternalAPIServiceError e){
+    public ResponseEntity<String> handleExternalApiError(ExternalAPIServiceError e) {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
-
     }
-
 }
 

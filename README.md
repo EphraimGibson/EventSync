@@ -51,24 +51,33 @@ The dashboard displays three key metrics:
 3. **Sentiment Score Analysis**: Displays the sum of all sentiment scores across all feedback. This approach ensures that all sentiment nuances are captured - for example, if a feedback is classified as positive with a score of 0.51 but also has a negative score of 0.49, both values contribute to the overall analysis.
 
 
-## Installation for Users
+## Access the Application
 
-UI ....LOADING
-### Setup
+The EventSync application is already deployed and ready to use. No installation or setup is required.
 
---coming up
+Simply visit the following URL to access the application:
+
+**[remycommits-337869308.us-east-1.elb.amazonaws.com](http://remycommits-337869308.us-east-1.elb.amazonaws.com)**
+
+OpenAPI Documentation: **[remycommits-337869308.us-east-1.elb.amazonaws.com/swagger-ui/index.html](http://remycommits-337869308.us-east-1.elb.amazonaws.com/swagger-ui/index.html)**
 
 ## Developer Guide
 
 ### Technology Stack
 
-- **Framework**: Spring Boot 3.5.0
-- **Language**: Java 17
-- **Database**: H2 (in-memory)
-- **Build Tool**: Maven
-- **API Documentation**: SpringDoc OpenAPI
-- **External API**: Hugging Face Sentiment Analysis
-- **React**: Front-End
+<div align="center">
+  <p>
+    <img src="https://img.shields.io/badge/Spring%20Boot-3.5.0-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="Spring Boot" />
+    <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java" />
+    <img src="https://img.shields.io/badge/H2-Database-2496ED?style=for-the-badge&logo=h2-database&logoColor=white" alt="H2 Database" />
+  </p>
+  <p>
+    <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white" alt="Maven" />
+    <img src="https://img.shields.io/badge/OpenAPI-6BA539?style=for-the-badge&logo=openapi-initiative&logoColor=white" alt="OpenAPI" />
+    <img src="https://img.shields.io/badge/Hugging%20Face-FF9A00?style=for-the-badge&logo=huggingface&logoColor=white" alt="Hugging Face" />
+    <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  </p>
+</div>
 
 ### Project Structure
 
@@ -87,6 +96,13 @@ UI ....LOADING
 - `GET /api/events/summary`: Get sentiment summary for all events
 
 ### Development Setup
+
+### Docker
+
+You can pull the pre-built Docker image for EventSync:
+```
+docker pull remy979/eventsync:latest
+```
 
 ### Prerequisites
 
@@ -124,6 +140,18 @@ UI ....LOADING
    mvn test
    ```
 
+
+## Future Features
+
+We are continuously working to enhance EventSync with more advanced AI capabilities. Upcoming features include:
+
+- **Advanced Sentiment Analysis**: More sophisticated AI models to provide deeper insights into feedback sentiment
+- **Trend Analysis**: AI-powered tracking of sentiment trends over time to identify patterns
+- **Feedback Categorization**: Automatic categorization of feedback topics to help organizers focus on specific areas
+- **Personalized Recommendations**: AI-generated suggestions for event improvements based on feedback analysis
+- **Real-time Analytics Dashboard**: Live updates of sentiment metrics during events
+
+These enhancements will allow event organizers to receive more detailed and actionable analytics, enabling them to create better, more engaging events based on participant feedback.
 
 ## Contact
 

@@ -3,10 +3,8 @@ package pro.ephraimgibson.ibm.internproject.eventsync.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pro.ephraimgibson.ibm.internproject.eventsync.data.FeedbackRepository;
 import pro.ephraimgibson.ibm.internproject.eventsync.model.Feedback;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 @Service

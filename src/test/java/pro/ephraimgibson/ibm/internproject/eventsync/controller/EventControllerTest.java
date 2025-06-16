@@ -1,6 +1,5 @@
 package pro.ephraimgibson.ibm.internproject.eventsync.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

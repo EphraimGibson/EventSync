@@ -28,7 +28,6 @@ public class SentimentService {
 
     public SentimentAnalysis getAISentimentAnalysis(String content) {
         try {
-            System.out.println(apiToken);
             List<List<SentimentResult>> nestedAISentimentResponse = webClient.post()
                     .uri("/models/cardiffnlp/twitter-roberta-base-sentiment")
                     .header("Authorization", "Bearer " + apiToken)
@@ -48,8 +47,6 @@ public class SentimentService {
             throw new ExternalAPIServiceError();
         }
     }
-
-
 }
 
 

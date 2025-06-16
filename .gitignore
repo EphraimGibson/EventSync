@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# AWS Task Definitions (contain sensitive ARNs)
+task-definition.json
+*task-definition*.json
+
+# AWS Configuration
+aws-config/
+.aws/
+
+deploy-eventsync.sh
