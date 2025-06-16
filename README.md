@@ -31,7 +31,26 @@ EventSync is a platform designed to streamline event management for teams organi
 - Automatic sentiment analysis of feedback using Hugging Face API
 - View feedback count and sentiment summary per event
 - RESTful API with Swagger documentation
-![Screenshot 2025-06-16 at 01.15.27.png](../../../../var/folders/v_/tyrwxp093zs449kyjgp169mh0000gn/T/TemporaryItems/NSIRD_screencaptureui_HrmRsa/Screenshot%202025-06-16%20at%2001.15.27.png)
+
+## Sentiment Analysis Dashboard
+
+![Sentiment Analysis Dashboard](images/Screenshot.png)
+
+### How Sentiment Analysis Works
+
+The dashboard displays three key metrics:
+
+1. **Overall Sentiment Score**: Calculated by combining all positive and negative scores from sentiment analysis, not just the dominant sentiment. The formula is:
+   ```
+   overallAverageScore = (averageOfPositiveScores - averageOfNegativeScores + 100) / 2
+   ```
+   This normalizes the score to a 0-100 scale where higher values indicate more positive sentiment.
+
+2. **Total Feedback by Sentiment**: Shows the count of feedback items categorized by their dominant sentiment (positive, negative, neutral) with percentage equivalents below.
+
+3. **Sentiment Score Analysis**: Displays the sum of all sentiment scores across all feedback. This approach ensures that all sentiment nuances are captured - for example, if a feedback is classified as positive with a score of 0.51 but also has a negative score of 0.49, both values contribute to the overall analysis.
+
+
 ## Installation for Users
 
 UI ....LOADING
