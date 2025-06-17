@@ -1,6 +1,6 @@
 # EventSync
 
-EventSync is a backend application that helps teams organize events and automatically analyzes participant feedback using AI sentiment analysis.
+EventSync is a backend application with a React frontend served as static files. It helps teams organize events and automatically analyzes participant feedback using AI sentiment analysis.
 
 ## Overview
 
