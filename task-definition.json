@@ -1,0 +1,40 @@
+{
+  "family": "eventsync-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::610318136100:role/ecsTaskExecutionRoleqq",
+  "containerDefinitions": [
+    {
+      "name": "eventsync-container",
+      "image": "remy979/eventsync:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/eventsync",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "environment": [
+
+      ],
+      "secrets": [
+        {
+          "name": "TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:610318136100:secret:eventsync/external-api-key-RhYHBN"
+        }
+      ]
+    }
+  ]
+}
+
