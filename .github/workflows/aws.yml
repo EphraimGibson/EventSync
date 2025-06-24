@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: eventsync           # set this to your Amazon ECR repository name
   ECS_SERVICE: eventsync-task-service-ov6ni1db                 # set this to your Amazon ECS service name
   ECS_CLUSTER: eventsync-cluster                # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: eventsync-container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -44,7 +44,16 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: mvn test 
+    
   deploy:
+    needs: test
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
