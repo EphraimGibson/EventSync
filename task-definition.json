@@ -7,7 +7,7 @@
   "executionRoleArn": "arn:aws:iam::610318136100:role/ecsTaskExecutionRoleqq",
   "containerDefinitions": [
     {
-      "name": "eventsync-container",
+      "name": "eventsync",
       "image": "remy979/eventsync:latest",
       "portMappings": [
         {
