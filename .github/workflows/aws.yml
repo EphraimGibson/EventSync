@@ -24,6 +24,10 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
+permissions:
+  contents: read
+  id-token: write 
+  
 name: Deploy to Amazon ECS
 
 on:
@@ -65,11 +69,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Check IAM role secret
-      run: echo "roleused ${{ secrets.IAM_ROLE }}"
-
     - name: Configure AWS credentials using OIDC
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.IAM_ROLE }}
         role-session-name: GitHubActionsSession
