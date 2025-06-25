@@ -2,3 +2,12 @@
 target
 .mvn
 *.iml
+.github/
+.mvn/
+mvnw
+mvnw.cmd
+images/
+EventSync.postman_collection.json
+README.md
+.gitattributes
+.gitignore
