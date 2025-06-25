@@ -57,9 +57,10 @@ The EventSync application is already deployed and ready to use. No installation 
 
 Simply visit the following URL to access the application:
 
-**[remycommits-337869308.us-east-1.elb.amazonaws.com](http://remycommits-337869308.us-east-1.elb.amazonaws.com)**
+**[d1vpa1yx6jfd2d.cloudfront.net](http://d1vpa1yx6jfd2d.cloudfront.net)**
 
-OpenAPI Documentation: **[remycommits-337869308.us-east-1.elb.amazonaws.com/swagger-ui/index.html](http://remycommits-337869308.us-east-1.elb.amazonaws.com/swagger-ui/index.html)**
+OpenAPI Documentation: 
+**[d1vpa1yx6jfd2d.cloudfront.net/swagger-ui/index.html](http://d1vpa1yx6jfd2d.cloudfront.net/swagger-ui/index.html)**
 
 ## Developer Guide
 
