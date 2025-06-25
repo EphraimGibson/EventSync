@@ -15,7 +15,6 @@ import pro.ephraimgibson.ibm.internproject.eventsync.service.EventService;
 import pro.ephraimgibson.ibm.internproject.eventsync.service.FeedbackService;
 
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -71,7 +70,7 @@ public class EventControllerTest {
         when(mockFeedbackService.submitFeedback(any(Feedback.class))).thenReturn(inputFeedback);
 
         //Then
-        eventRestController.createFeedback(eventId,inputFeedback);
+        eventRestController.createFeedback(eventId, inputFeedback);
 
         assertEquals(mockEvent, inputFeedback.getEvent());
     }

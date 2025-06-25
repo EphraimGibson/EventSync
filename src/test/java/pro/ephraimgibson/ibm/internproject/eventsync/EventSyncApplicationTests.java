@@ -114,10 +114,10 @@ class EventSyncApplicationTests {
     @Test
     void testShouldThrowExceptionWhenContentIsNotProvided() throws Exception {
         String feedbackJson = """
-        {
-            "content": ""
-        }
-    """;
+                    {
+                        "content": ""
+                    }
+                """;
 
         mockMvc.perform(post("/api/events/{eventId}/feedback", eventId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -152,10 +152,10 @@ class EventSyncApplicationTests {
     @Test
     void testCreateFeedbackShouldReturnNotFound_WhenInvalidId() throws Exception {
         String feedbackJson = """
-        {
-            "content": "Some feedback"
-        }
-    """;
+                    {
+                        "content": "Some feedback"
+                    }
+                """;
 
         mockMvc.perform(post("/api/events/{eventId}/feedback", invalidId)
                         .contentType(MediaType.APPLICATION_JSON)
