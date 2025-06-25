@@ -66,7 +66,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Check IAM role secret
-      run: echo "${{ secrets.IAM_ROLE }}"
+      run: echo "roleused ${{ secrets.IAM_ROLE }}"
 
     - name: Configure AWS credentials using OIDC
       uses: aws-actions/configure-aws-credentials@v
