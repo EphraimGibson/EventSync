@@ -1,4 +1,4 @@
-FROM maven:3.8.4-openjdk-17-slim AS builder
+FROM eclipse-temurin:17-jdk-jammy AS builder
 ARG VERSION=0.0.1-SNAPSHOT
 WORKDIR /build/
 COPY pom.xml /build/
